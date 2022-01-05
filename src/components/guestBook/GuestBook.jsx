@@ -2,24 +2,37 @@ import React from 'react';
 import { useState } from 'react';
 import { useEntries } from '../../context/entryContext';
 import { useUser } from '../../context/userContext';
+import { useAuth } from '../../hooks/useAuth';
+import { useHistory } from 'react-router-dom';
 
 export default function GuestBook() {
   const [guestEntry, setGuestEntry] = useState('');
   const [name, setName] = useState('');
   const { entries, setEntries } = useEntries();
-  const { user, setUser } = useUser();
+  // const { user, setUser } = useUser();
+  const { user, setUser } = useAuth();
+  const history = useHistory();
+
+  let auth = useAuth();
 
   function updateNameEntry() {
     if (!guestEntry) return;
 
-    setUser(name);
-    setEntries([...entries, { name, message: guestEntry }]);
+    // setUser(name);
+    setEntries([...entries, { name: user, message: guestEntry }]);
     setGuestEntry('');
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     updateNameEntry();
+  };
+
+  const handleLogOut = () => {
+    const signOut = auth.logout();
+    if (signOut) {
+      history.replace('/login');
+    }
   };
 
   const guestName = (
@@ -52,13 +65,7 @@ export default function GuestBook() {
         />
         <button type="submit">Sign.</button>
         {user && (
-          <button
-            type="button"
-            onClick={() => {
-              setUser('');
-              setName('');
-            }}
-          >
+          <button type="button" onClick={() => handleLogOut()}>
             Not {user}?
           </button>
         )}
