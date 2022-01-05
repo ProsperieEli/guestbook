@@ -1,10 +1,9 @@
 import React from 'react';
-import { Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import Home from './views/Home';
-import ProvideContext from './components/context/ProvideContext';
-import PrivateRoute from './components/privateRoute/PrivateRoute';
-import { Route } from 'react-router-dom';
+import ProvideContext from './context/ProvideContext';
+import { PrivateRoute } from './components/privateRoute/PrivateRoute';
 import Login from './views/login/Login';
 
 export default function App() {
@@ -14,8 +13,10 @@ export default function App() {
         <Router>
           <Layout />
           <Switch>
-            <Route path="/login" component={<Login />} />
-            <PrivateRoute path="/">
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute exact path="/">
               <Home />
             </PrivateRoute>
           </Switch>

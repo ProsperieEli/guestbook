@@ -6,25 +6,27 @@ import { useState, createContext } from 'react';
 export const authContext = createContext();
 
 export default function ProvideContext({ children }) {
-  const [users, setUsers] = useState(null);
+  const [user, setUser] = useState(null);
 
-  const login = (userName, password) => {
+  const login = (username, password) => {
     const loginSuccess =
-      userName === process.env.AUTH_USERNAME &&
+      username === process.env.AUTH_USERNAME &&
       password === process.env.AUTH_PASSWORD;
 
-    if (loginSuccess) setUsers({ userName });
+    if (loginSuccess) {
+      setUser(username);
+      console.log('hi', username);
+    }
     return loginSuccess;
   };
 
-  const logout = (callback) => {
-    setUsers(null);
-    callback();
+  const logout = () => {
+    setUser(null);
   };
 
   return (
     //this tells it what to pass down to anything that is wrapped inside it.
-    <authContext.Provider value={{ users, login, logout }}>
+    <authContext.Provider value={{ user, login, logout }}>
       {children}
     </authContext.Provider>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useContext } from 'react';
-import { authContext } from '../components/context/ProvideContext';
+import { authContext } from '../context/ProvideContext';
 
 //this function is creating the hook that grabs the context
 export function useAuth() {

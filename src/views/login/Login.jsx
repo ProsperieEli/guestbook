@@ -7,18 +7,16 @@ export default function Login() {
   const history = useHistory();
   const location = useLocation();
   const auth = useAuth();
-  const { formState, handleFormChange } = useForm({
-    userName: '',
-    password: '',
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const [error, setError] = useState(null);
 
-  const { from } = location.state || { from: { pathname: '/' } };
+  let { from } = location.state || { from: { pathname: '/' } };
 
   const handleLogin = (e) => {
-    expect.preventDefault();
-    const loggedin = auth.login(formState.userName, formState.password);
+    e.preventDefault();
+    const loggedin = auth.login(username, password);
 
     loggedin ? history.replace(from) : setError('Login failed');
   };
@@ -32,16 +30,16 @@ export default function Login() {
           id="userName"
           name="userName"
           type="text"
-          value={formState.userName}
-          onChange={(event) => handleFormChange(event)}
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
         />
         <label htmlFor="password">Password</label>
         <input
           id="password"
           name="password"
           type="password"
-          value={formState.password}
-          onChange={(event) => handleFormChange(event)}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
         />
         <button>Login</button>
       </form>

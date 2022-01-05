@@ -1,10 +1,10 @@
-import React from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { Redirect, Route } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 //This will wrap around your Route in App.js to redirect to login if not authenticated
-export default function PrivateRoute({ children, ...rest }) {
+export function PrivateRoute({ children, ...rest }) {
   let auth = useAuth();
+  console.log(auth.user);
   return (
     <Route
       //...rest is for all the router props
@@ -12,7 +12,8 @@ export default function PrivateRoute({ children, ...rest }) {
       {...rest}
       //location is where we send them back after redirect.
       render={({ location }) => {
-        auth.userName ? (
+        //explicit return: if {} you have to return. () are implicite.
+        return auth.user ? (
           children
         ) : (
           <Redirect
